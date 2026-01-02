@@ -124,3 +124,13 @@ class Nelson_AI_Assistant {
     }
 }
 add_action('plugins_loaded',['Nelson_AI_Assistant','get_instance']);
+public function render_settings() {
+    if (!current_user_can('manage_options')) return;
+    if (isset($_POST['nelson_save']) && check_admin_referer('nelson_settings')) {
+        update_option('nelson_name', sanitize_text_field($_POST['nelson_name']));
+        update_option('nelson_api_key', sanitize_text_field($_POST['nelson_api_key']));
+        update_option('nelson_model', sanitize_text_field($_POST['nelson_model']));
+        echo '<div class="notice notice-success"><p>Настройки сохранены!</p></div>';
+    }
+    include NELSON_DIR . 'admin/settings.php';
+}
